@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://bh57qr4x3q14b"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_auest"]
+[ext_resource type="PackedScene" uid="uid://duweyeyrtv0ur" path="res://Objects/character.tscn" id="1_huv7b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2a2oc"]
+resource_local_to_scene = true
+size = Vector2(94, 94)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r7x8o"]
+size = Vector2(60, 10)
+
+[node name="Player" groups=["player"] instance=ExtResource("1_huv7b")]
+modulate = Color(0.356863, 1, 0.345098, 1)
+script = ExtResource("1_auest")
+
+[node name="Collision" parent="." index="3"]
+shape = SubResource("RectangleShape2D_2a2oc")
+
+[node name="WallCollision" type="CollisionShape2D" parent="." index="7"]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_r7x8o")

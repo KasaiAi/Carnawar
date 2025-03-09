@@ -1,0 +1,42 @@
+Critical:
+damage on dash
+projectile wall rebound
+wall stops dash
+player jump
+if projectile is hit while thrown, bump
+- last thrown has priority
+enemy pursue on sight
+tank systems
+- chutes
+> drops items every ?? seconds (old ones disappear on a timer)
+- cannons
+- door
+> locked from the outside
+> can be broken (temporary?)
+> can be sabotaged
+> opens when tank is busted
+- engine room
+npc strategy (steal, sabotage, guard, fire, balance)
+minimap
+
+bidirectional animations
+
+Optional:
+fixing tank systems
+grab with head
+stronger throw during dash (basically the whole distance between tanks)
+item weight, speed, hp
+
+Bugs:
+quickly aternating E and Space resets the throwing cooldown
+
+Polish:
+improve throw
+- offset launch point slightly towards the throw direction
+- adjust throw speed (more time to catch things, catch more things)
+slap-offs
+- quick attack doesn't hurt, but temporarily stuns target
+- slap cancels stun
+sprint?
+
+remotetransform2d as the launch anchor could fix the tween problem and help tell who threw a projectile (set to parent's group on launch() and clear group at the end of thrown)

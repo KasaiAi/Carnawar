@@ -1,0 +1,85 @@
+[gd_scene load_steps=5 format=3 uid="uid://1o44xj7t2frf"]
+
+[ext_resource type="Texture2D" uid="uid://ds686qn5sq1kw" path="res://icon.svg" id="4_ejfpo"]
+[ext_resource type="PackedScene" uid="uid://1vyc384dp2ya" path="res://Objects/ammo_test.tscn" id="5_wooby"]
+[ext_resource type="PackedScene" uid="uid://bsot40et3avlx" path="res://Objects/player_test.tscn" id="6_q8b1p"]
+
+[sub_resource type="GDScript" id="GDScript_6lmfb"]
+script/source = "extends Camera2D
+
+@export var target: Node
+
+func _ready():
+	pass # Replace with function body.
+
+func _process(_delta):
+	if target:
+		self.position = target.position + Vector2(0, -40)
+"
+
+[node name="World" type="Node2D"]
+
+[node name="floor" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.466667)
+texture_repeat = 2
+position = Vector2(1902, 990)
+scale = Vector2(1, 0.703125)
+texture = ExtResource("4_ejfpo")
+region_enabled = true
+region_rect = Rect2(0, 0, 3800, 3000)
+
+[node name="Wall" type="StaticBody2D" parent="."]
+position = Vector2(1422, 547)
+collision_layer = 8
+collision_mask = 15
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Wall"]
+position = Vector2(-1295, -356)
+polygon = PackedVector2Array(0, 2, 7, 1751, 3569, 1747, 3567, 0, 0, 2, -183, -235, 3979, -243, 3987, 2215, -183, 2215, -183, -243)
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
+position = Vector2(800, 450)
+zoom = Vector2(0.8, 0.8)
+limit_left = 0
+limit_top = 0
+limit_right = 3800
+limit_bottom = 2000
+limit_smoothed = true
+position_smoothing_enabled = true
+script = SubResource("GDScript_6lmfb")
+target = NodePath("../TestPlayer")
+
+[node name="Player" parent="." instance_placeholder="res://Objects/player.tscn"]
+position = Vector2(548, 878)
+
+[node name="TestPlayer" parent="." node_paths=PackedStringArray("Wall") instance=ExtResource("6_q8b1p")]
+position = Vector2(456, 860)
+Wall = NodePath("../Wall")
+
+[node name="TestAmmo" parent="." instance=ExtResource("5_wooby")]
+position = Vector2(478, 817)
+
+[node name="Enemy" parent="." instance_placeholder="res://Objects/enemy.tscn"]
+process_mode = 4
+position = Vector2(755, 351)
+
+[node name="Enemy2" parent="." instance_placeholder="res://Objects/enemy.tscn"]
+position = Vector2(365, 654)
+
+[node name="Ammo1" parent="." instance_placeholder="res://Objects/ammo.tscn"]
+position = Vector2(702, 660)
+
+[node name="Ammo2" parent="." instance_placeholder="res://Objects/ammo.tscn"]
+position = Vector2(669, 464)
+
+[node name="Ammo3" parent="." instance_placeholder="res://Objects/ammo.tscn"]
+position = Vector2(518, 571)
+
+[node name="Ammo4" parent="." instance_placeholder="res://Objects/ammo.tscn"]
+position = Vector2(404, 666)
+
+[node name="Ammo5" parent="." instance_placeholder="res://Objects/ammo.tscn"]
+position = Vector2(404, 666)
+
+[node name="Ammo6" parent="." instance_placeholder="res://Objects/ammo.tscn"]
+position = Vector2(404, 666)

@@ -1,0 +1,201 @@
+[gd_scene load_steps=21 format=3 uid="uid://bsot40et3avlx"]
+
+[ext_resource type="Texture2D" uid="uid://brt1a6k6m5lk0" path="res://Assets/rect.png" id="1_7hjou"]
+
+[sub_resource type="GDScript" id="GDScript_ebluw"]
+resource_name = "player_test"
+script/source = "extends CharacterBase
+
+@export var Wall: Node2D
+
+func _ready():
+	speed = 300
+	max_load = 3
+
+func _physics_process(_delta):
+	# Character controller
+	direction = Input.get_vector(\"left\", \"right\", \"up\", \"down\")
+	if direction:
+		last_direction = direction
+	move()
+
+func a():
+	print(is_on_wall())
+
+func _input(event):
+	if Input.is_action_just_pressed(\"cycle_left\") and grabbed_items.size() < max_load:
+		for i in $Pickup.get_overlapping_bodies():
+			if i.is_in_group(\"ammo\"):
+				grabbed_items.append(i)
+		for item in grabbed_items.size():
+			print($GrabbedItems.get_children()[item])
+			print(grabbed_items[item])
+		print()
+#			child.remote_path = grabbed_items[child.get_index()].get_path()
+	if Input.is_action_just_pressed(\"cycle_right\"):
+		$GrabbedItems/\"1\".remote_path = \"\"
+#		var item = grabbed_items.pop_front()
+#		for i in $GrabbedItems
+#
+#	if knockback == false:
+#		if Input.is_action_just_pressed(\"action\"):
+#			Animator.play(\"charging up\")
+#		elif Input.is_action_just_released(\"action\"):
+#			if att_ready:
+#				attack()
+#			else:
+#				if Animator.current_animation == \"charging up\":
+#					Animator.play(\"idle\")
+#					occupied = false
+#			grab()
+#		if Input.is_action_just_pressed(\"throw\"):
+#			throw()
+#		if not occupied and event is InputEventMouseButton and not grabbed_items.is_empty():
+#			if Input.is_action_just_pressed(\"cycle_left\"):
+#				grabbed_items.append(grabbed_items.pop_front())
+##				print()
+#			if Input.is_action_just_pressed(\"cycle_right\"):
+#				grabbed_items.insert(0, grabbed_items.pop_back())
+#			reorder()
+"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_00ysb"]
+animation = &"attacking"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rcp0n"]
+animation = &"charging up"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6a3rv"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jlhrt"]
+animation = &"knockback"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c1em0"]
+animation = &"running"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fcf15"]
+animation = &"throwing"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hir6n"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_chcd2"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8xrv5"]
+advance_mode = 2
+advance_expression = "velocity"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qfi7q"]
+advance_mode = 2
+advance_expression = "!velocity"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jyk4f"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_o5r1d"]
+advance_mode = 2
+advance_expression = "Animator.current_animation == \"throwing\""
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_qlanw"]
+reset_ends = true
+states/Start/position = Vector2(97.3333, 100.678)
+states/attacking/node = SubResource("AnimationNodeAnimation_00ysb")
+states/attacking/position = Vector2(572, 14.1482)
+"states/charging up/node" = SubResource("AnimationNodeAnimation_rcp0n")
+"states/charging up/position" = Vector2(337.333, 14)
+states/idle/node = SubResource("AnimationNodeAnimation_6a3rv")
+states/idle/position = Vector2(200, 102.175)
+states/knockback/node = SubResource("AnimationNodeAnimation_jlhrt")
+states/knockback/position = Vector2(571.333, 192.815)
+states/running/node = SubResource("AnimationNodeAnimation_c1em0")
+states/running/position = Vector2(335.778, 191.778)
+states/throwing/node = SubResource("AnimationNodeAnimation_fcf15")
+states/throwing/position = Vector2(450.222, 100.858)
+transitions = ["charging up", "attacking", SubResource("AnimationNodeStateMachineTransition_hir6n"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_chcd2"), "idle", "running", SubResource("AnimationNodeStateMachineTransition_8xrv5"), "running", "idle", SubResource("AnimationNodeStateMachineTransition_qfi7q"), "throwing", "idle", SubResource("AnimationNodeStateMachineTransition_jyk4f"), "idle", "throwing", SubResource("AnimationNodeStateMachineTransition_o5r1d")]
+graph_offset = Vector2(-146, -24)
+
+[sub_resource type="GDScript" id="GDScript_7wga8"]
+resource_name = "animation"
+script/source = "extends AnimationTree
+
+@onready var character: CharacterBase = get_parent()
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(_delta):
+#	character.velocity
+#	character.last_direction
+	
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2a2oc"]
+resource_local_to_scene = true
+size = Vector2(94, 94)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2yajl"]
+size = Vector2(94, 70)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pdat6"]
+radius = 112.004
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r7x8o"]
+size = Vector2(94, 20)
+
+[node name="TestPlayer" type="CharacterBody2D" groups=["player"]]
+modulate = Color(0.356863, 1, 0.345098, 1)
+collision_mask = 12
+motion_mode = 1
+script = SubResource("GDScript_ebluw")
+knockback = true
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_qlanw")
+anim_player = NodePath("../AnimationPlayer")
+advance_expression_base_node = NodePath("..")
+script = SubResource("GDScript_7wga8")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -47)
+scale = Vector2(0.886792, 1)
+texture = ExtResource("1_7hjou")
+
+[node name="Collision" type="Area2D" parent="."]
+
+[node name="Collider" type="CollisionShape2D" parent="Collision"]
+position = Vector2(0, -47)
+shape = SubResource("RectangleShape2D_2a2oc")
+
+[node name="Attack" type="Area2D" parent="."]
+collision_mask = 6
+
+[node name="Collider" type="CollisionShape2D" parent="Attack"]
+position = Vector2(0, -35)
+shape = SubResource("RectangleShape2D_2yajl")
+
+[node name="Pickup" type="Area2D" parent="."]
+collision_mask = 4
+
+[node name="Collider" type="CollisionShape2D" parent="Pickup"]
+scale = Vector2(1, 0.65)
+shape = SubResource("CircleShape2D_pdat6")
+
+[node name="GrabbedItems" type="Node2D" parent="."]
+position = Vector2(0, -85)
+
+[node name="1" type="RemoteTransform2D" parent="GrabbedItems"]
+
+[node name="2" type="RemoteTransform2D" parent="GrabbedItems"]
+position = Vector2(0, -60)
+
+[node name="3" type="RemoteTransform2D" parent="GrabbedItems"]
+position = Vector2(0, -120)
+
+[node name="WallCollision" type="CollisionShape2D" parent="."]
+position = Vector2(0, -10)
+shape = SubResource("RectangleShape2D_r7x8o")
