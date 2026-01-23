@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://1o44xj7t2frf"]
+[gd_scene load_steps=7 format=3 uid="uid://1o44xj7t2frf"]
 
-[ext_resource type="Texture2D" uid="uid://ds686qn5sq1kw" path="res://icon.svg" id="4_ejfpo"]
-[ext_resource type="PackedScene" uid="uid://1vyc384dp2ya" path="res://Objects/ammo_test.tscn" id="5_wooby"]
-[ext_resource type="PackedScene" uid="uid://bsot40et3avlx" path="res://Objects/player_test.tscn" id="6_q8b1p"]
+[ext_resource type="PackedScene" uid="uid://dfkgpsrq1cl8l" path="res://Backup/ammo_backup.tscn" id="3_nchys"]
+[ext_resource type="PackedScene" uid="uid://bsot40et3avlx" path="res://Objects/player.tscn" id="3_ved82"]
+[ext_resource type="PackedScene" uid="uid://1vyc384dp2ya" path="res://Objects/ammo.tscn" id="4_4vx80"]
+[ext_resource type="Texture2D" uid="uid://bomtpreeoxtqm" path="res://icon.svg" id="4_ejfpo"]
+[ext_resource type="PackedScene" uid="uid://dckalsjmv3qhu" path="res://Objects/enemy.tscn" id="5_sf10k"]
 
 [sub_resource type="GDScript" id="GDScript_6lmfb"]
 script/source = "extends Camera2D
@@ -14,7 +16,7 @@ func _ready():
 
 func _process(_delta):
 	if target:
-		self.position = target.position + Vector2(0, -40)
+		self.position = target.position + Vector2(0, -80)
 "
 
 [node name="World" type="Node2D"]
@@ -47,39 +49,39 @@ limit_bottom = 2000
 limit_smoothed = true
 position_smoothing_enabled = true
 script = SubResource("GDScript_6lmfb")
-target = NodePath("../TestPlayer")
+target = NodePath("../Player")
 
-[node name="Player" parent="." instance_placeholder="res://Objects/player.tscn"]
-position = Vector2(548, 878)
+[node name="Player" parent="." instance=ExtResource("3_ved82")]
+position = Vector2(3246, 1709)
 
-[node name="TestPlayer" parent="." node_paths=PackedStringArray("Wall") instance=ExtResource("6_q8b1p")]
-position = Vector2(456, 860)
+[node name="TestPlayer" parent="." node_paths=PackedStringArray("Wall") instance=ExtResource("3_ved82")]
+position = Vector2(407, 1322)
 Wall = NodePath("../Wall")
 
-[node name="TestAmmo" parent="." instance=ExtResource("5_wooby")]
-position = Vector2(478, 817)
+[node name="TestAmmo" parent="." instance=ExtResource("4_4vx80")]
+position = Vector2(555, 1284)
 
-[node name="Enemy" parent="." instance_placeholder="res://Objects/enemy.tscn"]
+[node name="Enemy" parent="." instance=ExtResource("5_sf10k")]
 process_mode = 4
 position = Vector2(755, 351)
 
-[node name="Enemy2" parent="." instance_placeholder="res://Objects/enemy.tscn"]
+[node name="Enemy2" parent="." instance=ExtResource("5_sf10k")]
 position = Vector2(365, 654)
 
-[node name="Ammo1" parent="." instance_placeholder="res://Objects/ammo.tscn"]
-position = Vector2(702, 660)
+[node name="Ammo1" parent="." instance=ExtResource("3_nchys")]
+position = Vector2(3540, 1580)
 
-[node name="Ammo2" parent="." instance_placeholder="res://Objects/ammo.tscn"]
-position = Vector2(669, 464)
+[node name="Ammo2" parent="." instance=ExtResource("3_nchys")]
+position = Vector2(3507, 1384)
 
-[node name="Ammo3" parent="." instance_placeholder="res://Objects/ammo.tscn"]
-position = Vector2(518, 571)
+[node name="Ammo3" parent="." instance=ExtResource("3_nchys")]
+position = Vector2(3356, 1491)
 
-[node name="Ammo4" parent="." instance_placeholder="res://Objects/ammo.tscn"]
-position = Vector2(404, 666)
+[node name="Ammo4" parent="." instance=ExtResource("3_nchys")]
+position = Vector2(3242, 1586)
 
-[node name="Ammo5" parent="." instance_placeholder="res://Objects/ammo.tscn"]
-position = Vector2(404, 666)
+[node name="Ammo5" parent="." instance=ExtResource("3_nchys")]
+position = Vector2(3242, 1586)
 
-[node name="Ammo6" parent="." instance_placeholder="res://Objects/ammo.tscn"]
-position = Vector2(404, 666)
+[node name="Ammo6" parent="." instance=ExtResource("3_nchys")]
+position = Vector2(3242, 1586)

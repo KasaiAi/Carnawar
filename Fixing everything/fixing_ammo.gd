@@ -1,9 +1,9 @@
-extends Node2D
+extends RigidBody2D
 
 var enemy_group: String = "neutral"
 
 @onready var Animator = $AnimationPlayer
-@onready var collision = $CollisionShape2D
+@onready var collision = $Hitbox
 
 @export var thrown = false # thrown, damaging projectile
 @export var bouncing = false # catchable
@@ -18,6 +18,8 @@ var launch_speed = 8 # default: Vector2(10, -10)
 var gravity = .3
 var bounce
 var z_pos = -6
+
+var normal
 
 #func _ready():
 #	launch_point = global_position
@@ -40,13 +42,10 @@ func process_animation():
 			enemy_group = "neutral"
 			thrown = false
 			bouncing = true
-			print("A")
 		# Calculates movement and bounce
 		elif bouncing:
 			bounce -= 1
-			print("B")
 			z_pos = z_pos/1.5
-			print(speed)
 			# Resets state if stationary
 			if bounce <= 0:
 				bouncing = false
@@ -59,14 +58,23 @@ func launch(from:Vector2, to:Vector2, team:String = "neutral"):
 	direction = to
 	launch_point = from
 	enemy_group = team
+#	apply_impulse(direction * 400)
 	position = from
 	collision.position.y -= 85
 
-func _on_collide(_body):
-	pass
+func launch_physics(dir:Vector2, team:String = "neutral"):
+	direction = dir
+	enemy_group = team
 	
-#	if wall:
-#		get collision normal
+	apply_impulse(direction * 400)
+
+func _on_collide(body):
+	if body.is_in_group("wall"):
+		var normal = round((global_position - body.global_position).normalized())
+		if $Raycast/L.is_colliding() or $Raycast/R.is_colliding():
+			direction.x *= -1
+		if $Raycast/U.is_colliding() or $Raycast/D.is_colliding():
+			direction.y *= -1
 	
 #	if not $Damaging.disabled:
 #		if body.is_in_group("ammo"):
@@ -74,11 +82,6 @@ func _on_collide(_body):
 #			body.create_tween().tween_property(body, "position", direction * 130, 0.6).as_relative()
 #		if body.is_in_group(enemy_group) and body.get_node("Attack"):
 #			body.take_damage(direction)
-#	if body.name == "Wall":
-#		var rebound = round(move_and_collide(last_speed).get_normal())
-#		linear_velocity = last_speed * rebound
-#		print(linear_velocity)
-#		print(rebound)
 #		if $Damaging.disabled:
 #			position += Vector2(20, 20) * sign(throw_distance) * -1
 #		else:
@@ -87,7 +90,3 @@ func _on_collide(_body):
 #			#print(rebound)
 #			tween = create_tween()
 #			tween.tween_property(self, "position", rebound * -1, 1).as_relative()
-
-func _on_entered(_area):
-#	var rebound = move_and_collide().get_normal()
-	pass

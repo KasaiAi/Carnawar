@@ -1,7 +1,7 @@
-[gd_scene load_steps=28 format=3 uid="uid://duweyeyrtv0ur"]
+[gd_scene load_steps=29 format=3 uid="uid://b5b25vmxeex"]
 
-[ext_resource type="Script" path="res://Scripts/character.gd" id="1_22fs1"]
-[ext_resource type="Texture2D" uid="uid://dt5bp0c7ivyc7" path="res://Assets/rect.png" id="2_ajcsj"]
+[ext_resource type="Script" path="res://Fixing everything/fixing_character.gd" id="1_tclou"]
+[ext_resource type="Texture2D" uid="uid://dt5bp0c7ivyc7" path="res://Assets/rect.png" id="2_82yif"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_00ysb"]
 animation = &"attacking"
@@ -430,15 +430,18 @@ _data = {
 resource_local_to_scene = true
 size = Vector2(94, 94)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f5gkw"]
+size = Vector2(94, 70)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_pdat6"]
 radius = 112.004
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2yajl"]
-size = Vector2(94, 70)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jtw2r"]
+size = Vector2(94, 20)
 
 [node name="Body" type="CharacterBody2D"]
 collision_mask = 8
-script = ExtResource("1_22fs1")
+script = ExtResource("1_tclou")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_qlanw")
@@ -454,23 +457,46 @@ libraries = {
 [node name="Sprite" type="Sprite2D" parent="."]
 position = Vector2(0, -47)
 scale = Vector2(0.886792, 1)
-texture = ExtResource("2_ajcsj")
+texture = ExtResource("2_82yif")
 
-[node name="Collision" type="CollisionShape2D" parent="."]
+[node name="Hurtbox" type="Area2D" parent="."]
+
+[node name="Collision" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(0, -47)
 shape = SubResource("RectangleShape2D_b2523")
 
-[node name="Pickup" type="Area2D" parent="."]
+[node name="AttackBox" type="Area2D" parent="."]
+position = Vector2(0, -85)
+collision_mask = 6
+
+[node name="Collision" type="CollisionShape2D" parent="AttackBox"]
+position = Vector2(0, -35)
+shape = SubResource("RectangleShape2D_f5gkw")
+
+[node name="PickupZone" type="Area2D" parent="."]
 collision_mask = 4
 
-[node name="Collision" type="CollisionShape2D" parent="Pickup"]
+[node name="Collision" type="CollisionShape2D" parent="PickupZone"]
 scale = Vector2(1, 0.65)
 shape = SubResource("CircleShape2D_pdat6")
 
 [node name="GrabbedItems" type="Node2D" parent="."]
 position = Vector2(0, -85)
 
-[node name="Attack" type="CollisionShape2D" parent="."]
-position = Vector2(0, -35)
-shape = SubResource("RectangleShape2D_2yajl")
-disabled = true
+[node name="1" type="RemoteTransform2D" parent="GrabbedItems"]
+update_rotation = false
+update_scale = false
+
+[node name="2" type="RemoteTransform2D" parent="GrabbedItems"]
+position = Vector2(0, -60)
+update_rotation = false
+update_scale = false
+
+[node name="3" type="RemoteTransform2D" parent="GrabbedItems"]
+position = Vector2(0, -120)
+update_rotation = false
+update_scale = false
+
+[node name="WallCollision" type="CollisionShape2D" parent="."]
+position = Vector2(0, -10)
+shape = SubResource("RectangleShape2D_jtw2r")

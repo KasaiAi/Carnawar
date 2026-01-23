@@ -1,0 +1,179 @@
+[gd_scene load_steps=11 format=3 uid="uid://bim83gsnnqhn0"]
+
+[ext_resource type="Script" path="res://Fixing everything/fixing_ammo.gd" id="1_goohk"]
+[ext_resource type="Texture2D" uid="uid://dt5bp0c7ivyc7" path="res://Assets/rect.png" id="2_ohd7e"]
+[ext_resource type="Texture2D" uid="uid://cfom6vqb51un1" path="res://Assets/shadow.png" id="3_0iuj3"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1klpm"]
+friction = 0.0
+bounce = 2.0
+
+[sub_resource type="Animation" id="Animation_dhpsd"]
+resource_name = "thrown"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(-107, -0.25, 0, 0, -63, -222, -0.2, 0, 0.5, 0, -22, 0, -22, 0.25, 0),
+"times": PackedFloat32Array(0, 0.4, 1)
+}
+
+[sub_resource type="Animation" id="Animation_ov384"]
+resource_name = "hover"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/Sprite:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -10)]
+}
+
+[sub_resource type="Animation" id="Animation_bdcfm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/Sprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-22, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0whim"]
+_data = {
+"RESET": SubResource("Animation_bdcfm"),
+"hover": SubResource("Animation_ov384"),
+"thrown": SubResource("Animation_dhpsd")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rll70"]
+radius = 30.0167
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_am4jp"]
+size = Vector2(60, 16)
+
+[node name="Ammo" type="RigidBody2D" groups=["ammo"]]
+collision_layer = 4
+collision_mask = 7
+physics_material_override = SubResource("PhysicsMaterial_1klpm")
+gravity_scale = 0.0
+max_contacts_reported = 1
+contact_monitor = true
+lock_rotation = true
+script = ExtResource("1_goohk")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_0whim")
+}
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+position = Vector2(0, -22)
+shape = SubResource("CircleShape2D_rll70")
+
+[node name="Sprite" type="Sprite2D" parent="Hitbox"]
+scale = Vector2(0.396226, 0.468085)
+texture = ExtResource("2_ohd7e")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+z_index = -1
+scale = Vector2(0.363636, 0.363636)
+texture = ExtResource("3_0iuj3")
+
+[node name="WallCollider" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="Collider" type="CollisionShape2D" parent="WallCollider"]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_am4jp")
+
+[node name="Raycast" type="Node2D" parent="."]
+
+[node name="L" type="RayCast2D" parent="Raycast"]
+position = Vector2(-30, -5)
+target_position = Vector2(-30, 0)
+collision_mask = 8
+hit_from_inside = true
+
+[node name="R" type="RayCast2D" parent="Raycast"]
+position = Vector2(30, -5)
+target_position = Vector2(30, 0)
+collision_mask = 8
+hit_from_inside = true
+
+[node name="U" type="RayCast2D" parent="Raycast"]
+position = Vector2(0, -27)
+target_position = Vector2(0, -30)
+collision_mask = 8
+hit_from_inside = true
+
+[node name="D" type="RayCast2D" parent="Raycast"]
+position = Vector2(0, 17)
+target_position = Vector2(0, 30)
+collision_mask = 8
+hit_from_inside = true
+
+[connection signal="body_entered" from="WallCollider" to="." method="_on_collide"]

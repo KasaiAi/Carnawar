@@ -1,10 +1,12 @@
 Critical:
+projectile class (for characters and ammo)
 damage on dash
 projectile wall rebound
+- invert velocity of returning axis
 wall stops dash
 player jump
 if projectile is hit while thrown, bump
-- last thrown has priority
+- thrown last/by player has priority
 enemy pursue on sight
 tank systems
 - chutes
