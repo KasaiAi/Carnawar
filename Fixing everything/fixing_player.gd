@@ -29,8 +29,8 @@ func dash(): # debug
 			speed = 300
 
 func _input(_event):
-	# Cheat de puxar item pra a mão
 	if Input.is_action_just_pressed("action"):
+		# Cheat de puxar item pra a mão
 		if Pickup.get_overlapping_bodies().is_empty():
 			SUCC.thrown = false
 			SUCC.bouncing = false

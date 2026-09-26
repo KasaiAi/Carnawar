@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://45ov2i7vpabc"]
+[gd_scene load_steps=9 format=3 uid="uid://45ov2i7vpabc"]
 
 [ext_resource type="Texture2D" uid="uid://bomtpreeoxtqm" path="res://icon.svg" id="1_ocjrv"]
 [ext_resource type="PackedScene" uid="uid://dg3lhrage7lsa" path="res://Fixing everything/fixing_player.tscn" id="2_46rb6"]
 [ext_resource type="PackedScene" uid="uid://bim83gsnnqhn0" path="res://Fixing everything/fixing_ammo.tscn" id="3_jcrar"]
+[ext_resource type="PackedScene" uid="uid://did33vl4bg0s7" path="res://Objects/dispenser.tscn" id="4_kkgpy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_si47b"]
 size = Vector2(1391, 20)
@@ -106,5 +107,8 @@ script = null
 
 [node name="Collision" parent="Dummy/Hurtbox" index="0"]
 shape = SubResource("RectangleShape2D_y1i0t")
+
+[node name="Dispenser" parent="." instance=ExtResource("4_kkgpy")]
+position = Vector2(156, 762)
 
 [editable path="Dummy"]

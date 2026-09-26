@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://did33vl4bg0s7"]
 
+[ext_resource type="Script" path="res://Scripts/dispenser.gd" id="1_f5rr3"]
 [ext_resource type="Texture2D" uid="uid://dt5bp0c7ivyc7" path="res://Assets/rect.png" id="1_fjvfq"]
-[ext_resource type="Script" path="res://Objects/dispenser.gd" id="1_l4ekk"]
 
 [node name="Dispenser" type="Node2D"]
-script = ExtResource("1_l4ekk")
+script = ExtResource("1_f5rr3")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 self_modulate = Color(0.937255, 0.952941, 0.494118, 1)
@@ -17,3 +17,9 @@ self_modulate = Color(0.937255, 0.952941, 0.494118, 1)
 position = Vector2(-28, 0)
 scale = Vector2(1, 0.531915)
 texture = ExtResource("1_fjvfq")
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
